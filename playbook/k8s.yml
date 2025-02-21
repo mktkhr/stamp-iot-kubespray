@@ -1,0 +1,23 @@
+- name: Install Kubernetes
+  ansible.builtin.import_playbook: kubernetes_sigs.kubespray.cluster
+  vars:
+    kube_version: v1.30.8
+    kube_network_plugin: flannel
+    kube_pods_subnet: 10.244.0.0/16
+    kubeconfig_localhost: true
+    kubectl_localhost: true
+    helm_enabled: true
+    metrics_server_enabled: true
+    cert_manager_enabled: true
+    # MetalLBに必要
+    kube_proxy_strict_arp: true
+    metallb_enabled: true
+    metallb_namespace: metallb-system
+    metallb_config:
+      address_pools:
+        primary:
+          ip_range:
+            - 192.168.0.100-192.168.0.200
+          auto_assign: true
+      layer2:
+        - primary
